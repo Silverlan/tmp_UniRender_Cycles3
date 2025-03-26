@@ -57,6 +57,22 @@ jobs:
           depsDir="${{ steps.build-deps.outputs.deps-dir }}"
           buildDir="${{ steps.build-deps.outputs.build-dir }}"
           cyclesDir="$releaseDir/modules/unirender/cycles"
+
+          echo "ALL FILES IN pragmaDir: $pragmaDir"
+          cd $pragmaDir
+          ls -R
+
+          echo "ALL FILES IN depsDir: $depsDir"
+          cd $depsDir
+          ls -R
+
+          echo "ALL FILES IN buildDir: $buildDir"
+          cd $buildDir
+          ls -R
+
+          echo "ALL FILES IN cyclesDir: $cyclesDir"
+          cd $cyclesDir
+          ls -R
           
           copy_binary () {
              cmake -DInstallSrc="$1" -DInstallDst="$cyclesDir/" -P $pragmaDir/build_scripts/cmake/install_file.cmake

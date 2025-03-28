@@ -100,7 +100,7 @@ jobs:
           copy_binary "$depsDir/cycles/install/lib/liboslexec.so"
           copy_binary "$depsDir/cycles/install/lib/liboslnoise.so"
           copy_binary "$depsDir/cycles/install/lib/liboslquery.so"
-          copy_binary "$buildDir/modules/pr_unirender/external_libs/cycles/libUniRender_cycles.so"
+          copy_binary "$buildDir/modules/pr_unirender/external_libs/cycles/RelWithDebInfo/libUniRender_cycles.so"
           
           mkdir -p "$cyclesDir/source"
           cp -r "$depsDir/cycles/src/kernel" "$cyclesDir/source/kernel"

@@ -1,0 +1,42 @@
+name: Setup Pragma
+description: 'Setup Pragma'
+inputs:
+  clone_url:
+    description: 'The repository url where pragma resides.'
+    default: 'https://github.com/Silverlan/pragma.git'
+  branch:
+    description: 'The branch to clone Pragma from.'
+    default: 'main'
+  with_cuda:
+    description: 'Install CUDA?'
+    required: true
+    default: '1'
+runs:
+  using: "composite"
+  steps:
+    - uses: Silverlan/common_actions/action_start@main
+      with:
+        name: "pragma > setup"
+  
+    - name: Install Requirements
+      uses: Silverlan/tmp_UniRender_Cycles3/github_actions/install_requirements@main
+      with:
+        with_cuda: ${{ inputs.with_cuda }}
+      
+    - name: Download Pragma
+      shell: bash
+      run: |
+        git clone ${{ inputs.clone_url }} --recurse-submodules --branch ${{ inputs.branch }} pragma
+  
+    # This is a temporary workaround until gcc 14.2 is available
+    # with a fix for https://gcc.gnu.org/git/gitweb.cgi?p=gcc.git;h=e909d360dfaeafa9f45eda2461a1bedffac99ac2 
+    - name: Workaround for libstdc++ Bug
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+        sudo apt update
+        sudo apt install gcc-14 g++-14
+        sudo sed -i 's/\+\+this;/\+\+\*this;/g' /usr/include/c++/14/bits/unicode.h
+
+    - uses: Silverlan/common_actions/action_end@main
